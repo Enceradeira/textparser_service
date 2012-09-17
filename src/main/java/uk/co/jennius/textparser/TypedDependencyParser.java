@@ -1,5 +1,6 @@
 package uk.co.jennius.textparser;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -31,7 +32,13 @@ public class TypedDependencyParser {
 		String path = "uk/co/jennius/textparser/grammar/englishPCFG.ser.gz";
 		InputStream stream = TypedDependencyParser.class.getClassLoader().getResourceAsStream(path);
 		if (stream == null){
-			throw new Error("stream == null");
+			String currentPath = "can't be retrieved";
+			try {
+				currentPath = new java.io.File(".").getCanonicalPath();
+			} catch (IOException e) {
+				
+			}
+			throw new Error("stream == null :" + currentPath);
 		}
 			
 		if( _parserQuery == null){
