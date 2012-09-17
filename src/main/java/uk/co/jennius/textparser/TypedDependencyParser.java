@@ -33,14 +33,19 @@ public class TypedDependencyParser {
 		InputStream stream = TypedDependencyParser.class.getClassLoader().getResourceAsStream(path);
 		if (stream == null){
 			String currentPath = "can't be retrieved";
-			
-				// currentPath = new java.io.File(".").getCanonicalPath();
-			
+
+			try {
+				 System.err.print("Before getCanonicalPath");
+				currentPath = new java.io.File(".").getCanonicalPath();
+			} catch (Exception e) {
+				 System.err.print("Exception on getCanonicalPath: "+e.getMessage());
+			}
+
 			throw new Error("stream == null :" + currentPath);
 		}
-			
+
 		if( _parserQuery == null){
-			
+
 			LexicalizedParser parser = LexicalizedParser.loadModel(path, "-retainTmpSubcategories" /* should lead to better performance when producing typed-dependencies*/);
 			_parserQuery =  parser.parserQuery();
 		}
