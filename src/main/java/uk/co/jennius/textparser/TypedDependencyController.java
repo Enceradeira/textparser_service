@@ -1,12 +1,9 @@
 package uk.co.jennius.textparser;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
-import org.eclipse.jetty.util.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

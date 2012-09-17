@@ -1,12 +1,10 @@
 package uk.co.jennius.textparser;
 
-import java.util.ArrayList;
+
 import java.util.Iterator;
-import java.util.List;
 
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.Label;
-import edu.stanford.nlp.ling.Word;
 import edu.stanford.nlp.trees.LabeledScoredTreeNode;
 import edu.stanford.nlp.trees.Tree;
 

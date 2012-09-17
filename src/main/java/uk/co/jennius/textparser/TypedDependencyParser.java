@@ -1,10 +1,12 @@
 package uk.co.jennius.textparser;
 
+import java.io.InputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Iterator;
+
 import java.util.List;
 
+import edu.stanford.nlp.io.IOUtils;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.HasWord;
 import edu.stanford.nlp.objectbank.TokenizerFactory;
@@ -13,7 +15,7 @@ import edu.stanford.nlp.parser.lexparser.LexicalizedParserQuery;
 import edu.stanford.nlp.process.DocumentPreprocessor;
 import edu.stanford.nlp.process.PTBTokenizer;
 import edu.stanford.nlp.trees.LabeledScoredTreeNode;
-import edu.stanford.nlp.trees.Tree;
+
 
 public class TypedDependencyParser {
 
@@ -26,8 +28,14 @@ public class TypedDependencyParser {
 	}
 	
 	private static synchronized void initParserQuery(){
+		String path = "uk/co/jennius/textparser/grammar/englishPCFG.ser.gz";
+		InputStream stream = TypedDependencyParser.class.getClassLoader().getResourceAsStream(path);
+		if (stream == null){
+			throw new Error("stream == null");
+		}
+			
 		if( _parserQuery == null){
-			String path = "uk/co/jennius/textparser/grammar/englishPCFG.ser.gz";
+			
 			LexicalizedParser parser = LexicalizedParser.loadModel(path, "-retainTmpSubcategories" /* should lead to better performance when producing typed-dependencies*/);
 			_parserQuery =  parser.parserQuery();
 		}
@@ -78,7 +86,7 @@ public class TypedDependencyParser {
 	public List<Sentence> getTypedDependencies(String text) throws TextParserException {
 		List<Sentence> result = new ArrayList<Sentence>();
 		List<LabeledScoredTreeNode> sentences = getSentencesTree(text);
-		List<Tree> dummy = new ArrayList<Tree>();
+		
 		for( LabeledScoredTreeNode sentence : sentences){
 			LabeledScoredTreeNodeIterator iterator = new LabeledScoredTreeNodeIterator(sentence);
 			StringBuilder sentenceBuilder = new StringBuilder();
