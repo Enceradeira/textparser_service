@@ -34,7 +34,7 @@ public class TypedDependencyParser {
 		if (stream == null){
 			String currentPath = "can't be retrieved";
 			try {
-				currentPath = new java.io.File(".").getCanonicalPath();
+				// currentPath = new java.io.File(".").getCanonicalPath();
 			} catch (IOException e) {
 				
 			}
