@@ -1,12 +1,12 @@
 package uk.co.jennius.textparser;
 
 public class Sentence {
-	private String _text;
+	private String text;
 	public Sentence(String text){
-		_text = text;
+		this.text = text;
 	}
 	
 	public String get_text(){
-		return _text;
+		return text;
 	}	
 }

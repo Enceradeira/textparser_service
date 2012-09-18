@@ -1,14 +1,9 @@
 package uk.co.jennius.textparser;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
-
 import java.util.List;
 
-
-import edu.stanford.nlp.io.IOUtils;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.HasWord;
 import edu.stanford.nlp.objectbank.TokenizerFactory;
@@ -30,30 +25,9 @@ public class TypedDependencyParser {
 	}
 	
 	private static synchronized void initParserQuery(){
-		String currentPath = "can't be retrieved";
-		try {
-			System.err.print("Before getCanonicalPath");
-			currentPath = new java.io.File(".").getCanonicalPath();
-			System.err.print("Before printStructure");
-			DisplayDirectoryAndFile.display(".");
-			System.err.flush();
-			
-		} catch (Exception e) {
-			 System.err.print("Exception on getCanonicalPath: "+e.getMessage());
-		}
-
-	
-		String path = "englishPCFG.ser.gz";
-		ClassLoader classLoader = TypedDependencyParser.class.getClassLoader();
-		InputStream stream = classLoader.getResourceAsStream(path);
-		if (stream == null){
-				
-			throw new Error("stream == null :" + currentPath);
-		}
-
 		if( _parserQuery == null){
 
-			LexicalizedParser parser = LexicalizedParser.loadModel(path, "-retainTmpSubcategories" /* should lead to better performance when producing typed-dependencies*/);
+			LexicalizedParser parser = LexicalizedParser.loadModel("englishPCFG.ser.gz", "-retainTmpSubcategories" /* should lead to better performance when producing typed-dependencies*/);
 			_parserQuery =  parser.parserQuery();
 		}
 	}
