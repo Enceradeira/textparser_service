@@ -36,6 +36,7 @@ public class TypedDependencyParser {
 			currentPath = new java.io.File(".").getCanonicalPath();
 			System.err.print("Before printStructure");
 			DisplayDirectoryAndFile.display(".");
+			System.err.flush();
 			
 		} catch (Exception e) {
 			 System.err.print("Exception on getCanonicalPath: "+e.getMessage());
@@ -46,9 +47,7 @@ public class TypedDependencyParser {
 		ClassLoader classLoader = TypedDependencyParser.class.getClassLoader();
 		InputStream stream = classLoader.getResourceAsStream(path);
 		if (stream == null){
-			
-
-			
+				
 			throw new Error("stream == null :" + currentPath);
 		}
 
