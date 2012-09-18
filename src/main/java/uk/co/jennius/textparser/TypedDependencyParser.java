@@ -94,7 +94,7 @@ public class TypedDependencyParser {
 			
 			EnglishGrammaticalStructure structure = new EnglishGrammaticalStructure(sentenceTree);
 			for( TypedDependency dependency: structure.typedDependenciesCCprocessed()){
-				 Word word = createWord(dependency);
+				 Dependency word = createWord(dependency);
 				 sentence.addWord(word);
 			}
 			
@@ -103,13 +103,13 @@ public class TypedDependencyParser {
 		return result;
 	}
 
-	private Word createWord(TypedDependency dependency) {
+	private Dependency createWord(TypedDependency dependency) {
 		String gov = dependency.gov().label().originalText();
 		 String dep = dependency.dep().label().originalText();
 		 int govIndex = dependency.gov().index();
 		 int depIndex = dependency.dep().index();
 		 String relation = dependency.reln().getShortName();
-		 Word word = new Word(dep,gov,depIndex,govIndex,relation);
+		 Dependency word = new Dependency(dep,gov,depIndex,govIndex,relation);
 		return word;
 	}
 

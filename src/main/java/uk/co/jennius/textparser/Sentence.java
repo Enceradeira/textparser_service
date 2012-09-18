@@ -5,21 +5,21 @@ import java.util.List;
 
 public class Sentence {
 	private String text;
-	private List<Word> words;
+	private List<Dependency> dependencies;
 	public Sentence(String text){
 		this.text = text;
-		this.words = new ArrayList<Word>();
+		this.dependencies = new ArrayList<Dependency>();
 	}
 	
 	public String get_text(){
 		return text;
 	}
 
-	public List<Word> get_words() {
-		return words;
+	public List<Dependency> get_dependencies() {
+		return dependencies;
 	}
 
-	public void addWord(Word word) {
-		words.add(word);
+	public void addWord(Dependency word) {
+		dependencies.add(word);
 	}	
 }

@@ -17,20 +17,16 @@ public class TypedDependencyController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 		Gson gson = new Gson();
-		String text = req.getPathInfo();
-		if(text == null){
-			resp.sendError(HttpServletResponse.SC_OK,"text was empty");
+		String[] text = req.getParameterValues("text");	
+
+		if(text == null || text.length != 1){
+			resp.sendError(HttpServletResponse.SC_OK,"text not found. There must be exactly one query parameter 'text' (e.g.: /typed_dependencies.json?text=Hello%20World)");
 			return;
 		}
-		
-		if(text.length() > 0){
-			// remove trailing '/' 
-			text = text.substring(1);
-		}
-		
+	
 		List<Sentence> sentences;
 		try {
-			sentences = new TypedDependencyParser().getTypedDependencies(text);
+			sentences = new TypedDependencyParser().getTypedDependencies(text[0]);
 		} catch (TextParserException e) {
 			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,e.getMessage());
 			return;

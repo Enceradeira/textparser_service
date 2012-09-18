@@ -16,7 +16,7 @@ public class Main extends HttpServlet {
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
         server.setHandler(context);
-        context.addServlet(new ServletHolder(new TypedDependencyController()),"/typed_dependencies/*");
+        context.addServlet(new ServletHolder(new TypedDependencyController()),"/typed_dependencies.json/*");
         server.start();
         server.join();   
     }

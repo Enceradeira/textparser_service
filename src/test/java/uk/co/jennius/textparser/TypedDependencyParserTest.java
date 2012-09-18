@@ -35,11 +35,11 @@ public class TypedDependencyParserTest
 		List<Sentence> sentences = parser.getTypedDependencies("I'm a programmer!");
 		assertThat(sentences.size(), is(1));
 		Sentence sentence = sentences.get(0);
-		assertThat(sentence.get_words().size(), is(4));
-		Word iWord = sentence.get_words().get(0);
-		Word amWord = sentence.get_words().get(1); 
-		Word aWord = sentence.get_words().get(2); 
-		Word programmerWord = sentence.get_words().get(3); 
+		assertThat(sentence.get_dependencies().size(), is(4));
+		Dependency iWord = sentence.get_dependencies().get(0);
+		Dependency amWord = sentence.get_dependencies().get(1); 
+		Dependency aWord = sentence.get_dependencies().get(2); 
+		Dependency programmerWord = sentence.get_dependencies().get(3); 
 		
 		assertThat(iWord.getDep(), is("I"));
 		assertThat(iWord.getGov(), is("programmer"));

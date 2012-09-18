@@ -1,13 +1,13 @@
 package uk.co.jennius.textparser;
 
-public class Word {
+public class Dependency {
 	private String dep;
 	private String gov;
 	private int depIndex;
 	private int govIndex;
 	private String relation;
 
-	public Word(String dep, String gov, int depIndex, int govIndex, String relation){
+	public Dependency(String dep, String gov, int depIndex, int govIndex, String relation){
 		this.dep = dep;
 		this.gov = gov;
 		this.depIndex = depIndex;
