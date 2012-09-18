@@ -30,13 +30,17 @@ public class TypedDependencyParser {
 	
 	private static synchronized void initParserQuery(){
 		String path = "uk/co/jennius/textparser/grammar/englishPCFG.ser.gz";
-		InputStream stream = TypedDependencyParser.class.getClassLoader().getResourceAsStream(path);
+		ClassLoader classLoader = TypedDependencyParser.class.getClassLoader();
+		InputStream stream = classLoader.getResourceAsStream(path);
 		if (stream == null){
 			String currentPath = "can't be retrieved";
 
 			try {
-				 System.err.print("Before getCanonicalPath");
+				System.err.print("Before getCanonicalPath");
 				currentPath = new java.io.File(".").getCanonicalPath();
+				System.err.print("Before printStructure");
+				DisplayDirectoryAndFile.display(".");
+				
 			} catch (Exception e) {
 				 System.err.print("Exception on getCanonicalPath: "+e.getMessage());
 			}
