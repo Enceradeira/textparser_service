@@ -1,4 +1,4 @@
-package uk.co.jennius.textparser;
+package uk.co.jennius.textparser.grammar;
 
 import java.io.File;
 
