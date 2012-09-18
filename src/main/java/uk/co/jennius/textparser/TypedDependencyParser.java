@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import java.util.List;
 
-import uk.co.jennius.textparser.grammar.DisplayDirectoryAndFile;
 
 import edu.stanford.nlp.io.IOUtils;
 import edu.stanford.nlp.ling.CoreLabel;
@@ -43,7 +42,7 @@ public class TypedDependencyParser {
 		}
 
 	
-		String path = "uk/co/jennius/textparser/grammar/englishPCFG.ser.gz";
+		String path = "uk/co/jennius/textparser/englishPCFG.ser.gz";
 		ClassLoader classLoader = TypedDependencyParser.class.getClassLoader();
 		InputStream stream = classLoader.getResourceAsStream(path);
 		if (stream == null){
