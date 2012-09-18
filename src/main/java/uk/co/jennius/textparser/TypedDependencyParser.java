@@ -11,7 +11,9 @@ import edu.stanford.nlp.parser.lexparser.LexicalizedParser;
 import edu.stanford.nlp.parser.lexparser.LexicalizedParserQuery;
 import edu.stanford.nlp.process.DocumentPreprocessor;
 import edu.stanford.nlp.process.PTBTokenizer;
+import edu.stanford.nlp.trees.EnglishGrammaticalStructure;
 import edu.stanford.nlp.trees.LabeledScoredTreeNode;
+import edu.stanford.nlp.trees.TypedDependency;
 
 
 public class TypedDependencyParser {
@@ -73,19 +75,43 @@ public class TypedDependencyParser {
 			reader.close();
 		}
 	}
+	
+	private Sentence createSentence(LabeledScoredTreeNode sentenceTree)
+			throws TextParserException {
+		LabeledScoredTreeNodeIterator iterator = new LabeledScoredTreeNodeIterator(sentenceTree);
+		StringBuilder sentenceBuilder = new StringBuilder();
+		iterator.visit(new WordConcatenater(sentenceBuilder));
+		Sentence sentence = new Sentence(sentenceBuilder.toString().trim());
+		return sentence;
+	}
 
 	public List<Sentence> getTypedDependencies(String text) throws TextParserException {
 		List<Sentence> result = new ArrayList<Sentence>();
-		List<LabeledScoredTreeNode> sentences = getSentencesTree(text);
+		List<LabeledScoredTreeNode> sentenceTrees = getSentencesTree(text);
 		
-		for( LabeledScoredTreeNode sentence : sentences){
-			LabeledScoredTreeNodeIterator iterator = new LabeledScoredTreeNodeIterator(sentence);
-			StringBuilder sentenceBuilder = new StringBuilder();
-			iterator.visit(new WordConcatenater(sentenceBuilder));
-			result.add(new Sentence(sentenceBuilder.toString().trim()));
+		for( LabeledScoredTreeNode sentenceTree : sentenceTrees){
+			Sentence sentence = createSentence(sentenceTree);
+			
+			EnglishGrammaticalStructure structure = new EnglishGrammaticalStructure(sentenceTree);
+			for( TypedDependency dependency: structure.typedDependenciesCCprocessed()){
+				 Word word = createWord(dependency);
+				 sentence.addWord(word);
+			}
+			
+			result.add(sentence);
 		}
-		
 		return result;
 	}
+
+	private Word createWord(TypedDependency dependency) {
+		String gov = dependency.gov().label().originalText();
+		 String dep = dependency.dep().label().originalText();
+		 int govIndex = dependency.gov().index();
+		 int depIndex = dependency.dep().index();
+		 String relation = dependency.reln().getShortName();
+		 Word word = new Word(dep,gov,depIndex,govIndex,relation);
+		return word;
+	}
+
 
 }

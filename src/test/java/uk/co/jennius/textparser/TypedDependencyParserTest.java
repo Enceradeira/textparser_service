@@ -30,9 +30,39 @@ public class TypedDependencyParserTest
     }
 	
 	@Test
-	@Ignore
-	public void getTypedDependencies_ShouldReturnDependenciesInSentence()
+	public void getTypedDependencies_ShouldReturnDependenciesInSentence() throws TextParserException
 	{
-		assertThat(false, is(true));
+		List<Sentence> sentences = parser.getTypedDependencies("I'm a programmer!");
+		assertThat(sentences.size(), is(1));
+		Sentence sentence = sentences.get(0);
+		assertThat(sentence.get_words().size(), is(4));
+		Word iWord = sentence.get_words().get(0);
+		Word amWord = sentence.get_words().get(1); 
+		Word aWord = sentence.get_words().get(2); 
+		Word programmerWord = sentence.get_words().get(3); 
+		
+		assertThat(iWord.getDep(), is("I"));
+		assertThat(iWord.getGov(), is("programmer"));
+		assertThat(iWord.getDepIndex(), is(1));
+		assertThat(iWord.getGovIndex(), is(4));
+		assertThat(iWord.getRelation(), is("nsubj"));
+		
+		assertThat(amWord.getDep(), is("'m"));
+		assertThat(amWord.getGov(), is("programmer"));
+		assertThat(amWord.getDepIndex(), is(2));
+		assertThat(amWord.getGovIndex(), is(4));
+		assertThat(amWord.getRelation(), is("cop"));
+		
+		assertThat(aWord.getDep(), is("a"));
+		assertThat(aWord.getGov(), is("programmer"));
+		assertThat(aWord.getDepIndex(), is(3));
+		assertThat(aWord.getGovIndex(), is(4));
+		assertThat(aWord.getRelation(), is("det"));
+		
+		assertThat(programmerWord.getDep(), is("programmer"));
+		assertThat(programmerWord.getGov(), is(""));
+		assertThat(programmerWord.getDepIndex(), is(4));
+		assertThat(programmerWord.getGovIndex(), is(0));
+		assertThat(programmerWord.getRelation(), is("root"));
 	}
 }
