@@ -43,7 +43,7 @@ public class TypedDependencyParser {
 		}
 
 	
-		String path = "uk/co/jennius/textparser/englishPCFG.ser.gz";
+		String path = "englishPCFG.ser.gz";
 		ClassLoader classLoader = TypedDependencyParser.class.getClassLoader();
 		InputStream stream = classLoader.getResourceAsStream(path);
 		if (stream == null){
