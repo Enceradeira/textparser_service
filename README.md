@@ -18,11 +18,11 @@ see following [example](http://textparser-service.herokuapp.com/typed_dependenci
 If you happen to use a rest-enabled library (like ActiveResource in Rails) querying the service is straightforward (for example in Rails: `TypedDependency.find(:all, :params => { :text => text })`). 
 Otherwise you have to implement the `GET /typed_dependencies.json/?text=This is a text parser` and the following JSON-deserialization by other means.
 
-#License
+## License
 This work is licensed under [GNU General Public License (v3 or later)](http://www.gnu.org/licenses/gpl-3.0.html)
 
 
-# 3-party licenses
+## 3-party licenses
 
 [jetty-servlet](http://jetty.codehaus.org/jetty/): Dual [licensed](http://www.eclipse.org/jetty/licenses.php) under Apache and Eclipse
 
