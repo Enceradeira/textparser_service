@@ -26,8 +26,6 @@ This work is licensed under [GNU General Public License (v3 or later)](http://ww
 
 [jetty-servlet](http://jetty.codehaus.org/jetty/): Dual [licensed](http://www.eclipse.org/jetty/licenses.php) under Apache and Eclipse
 
-servlet-api: See license [here](/Enceradeira/textparser_service/licenses/servlet-api.html)
-
 [gson](http://code.google.com/p/google-gson/): Licensed under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
 [junit](http://www.junit.org/): Licensed under the [Common Public License - v 1.0](http://www.junit.org/license)
