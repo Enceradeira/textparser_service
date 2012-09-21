@@ -1,37 +1,31 @@
 package uk.co.jennius.textparser;
 
-public class Dependency {
-	private String dep;
+public class Dependency extends Atom {
 	private String gov;
-	private int depIndex;
 	private int govIndex;
 	private String relation;
 
-	public Dependency(String dep, String gov, int depIndex, int govIndex, String relation){
-		this.dep = dep;
+	public Dependency(String dep, String gov, int depIndex, int govIndex,
+			String relation) {
+		super(dep,depIndex);
 		this.gov = gov;
-		this.depIndex = depIndex;
 		this.govIndex = govIndex;
-		this.relation = relation; 
+		this.relation = relation;
 	}
-	
-	public String getDep(){
-		return dep;
-	}
-	
-	public String getGov(){
+
+	public String getGov() {
 		return gov;
 	}
 	
-	public int getDepIndex(){
-		return depIndex;
-	}
-	
-	public int getGovIndex(){
+	public int getGovIndex() {
 		return govIndex;
 	}
 	
-	public String getRelation(){
+	public void setGovIndex(int govIndex){
+		this.govIndex = govIndex;
+	}
+
+	public String getRelation() {
 		return relation;
-	}	
+	}
 }

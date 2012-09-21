@@ -5,4 +5,5 @@ import edu.stanford.nlp.trees.LabeledScoredTreeNode;
 
 public interface ILabeledScoredTreeNodeVisitor {
 	void visitLeaf(CoreLabel parent, LabeledScoredTreeNode leaf);
+	void visitsFinished();
 }

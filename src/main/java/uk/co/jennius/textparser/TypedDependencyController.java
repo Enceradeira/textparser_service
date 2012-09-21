@@ -14,25 +14,30 @@ public class TypedDependencyController extends HttpServlet {
 	private static final long serialVersionUID = 6454731624143069304L;
 
 	@Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		Gson gson = new Gson();
-		String[] text = req.getParameterValues("text");	
+		String[] text = req.getParameterValues("text");
 
-		if(text == null || text.length != 1){
-			resp.sendError(HttpServletResponse.SC_OK,"text not found. There must be exactly one query parameter 'text' (e.g.: /typed_dependencies.json?text=Hello%20World)");
+		if (text == null || text.length != 1) {
+			resp.sendError(
+					HttpServletResponse.SC_OK,
+					"text not found. There must be exactly one query parameter 'text' (e.g.: /typed_dependencies.json?text=Hello%20World)");
 			return;
 		}
-	
+
 		List<Sentence> sentences;
 		try {
-			sentences = new TypedDependencyParser().getTypedDependencies(text[0]);
+			sentences = new TypedDependencyParser(
+					TypedDependencyOptions.PreserveSentenceStructure)
+					.getTypedDependencies(text[0]);
 		} catch (TextParserException e) {
-			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,e.getMessage());
+			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					e.getMessage());
 			return;
 		}
-			
+
 		String json = gson.toJson(sentences, sentences.getClass());
 		resp.getWriter().print(json);
-    }
+	}
 }
