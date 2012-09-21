@@ -107,8 +107,8 @@ public class TypedDependencyParser {
 	private Dependency createDependency(TypedDependency dependency) {
 		String gov = dependency.gov().label().originalText();
 		String dep = dependency.dep().label().originalText();
-		int govIndex = dependency.gov().index();
-		int depIndex = dependency.dep().index();
+		int govIndex = dependency.gov().index() -1;  // because we prefer 0-based index 
+		int depIndex = dependency.dep().index() -1;
 		String relation = dependency.reln().getShortName();
 		Dependency word = new Dependency(dep, gov, depIndex, govIndex, relation);
 		return word;

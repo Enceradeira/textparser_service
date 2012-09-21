@@ -11,7 +11,7 @@ import edu.stanford.nlp.trees.LabeledScoredTreeNode;
 public class SentenceBuilder implements ILabeledScoredTreeNodeVisitor {
 	// the current index incremented every time a dependency or filling is added
 	// to the sentence
-	private int currentIndex = 1;
+	private int currentIndex = 0;
 	// the sentence being constructed
 	private Sentence sentence;
 	// the dependencies from which the sentence is constructed
