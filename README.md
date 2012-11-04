@@ -16,15 +16,19 @@ See [example](http://textparser-service.herokuapp.com/typed_dependencies.json/?t
 
 ### Service result
 The returned elements are sorted in order of their appearance in the text.
-The elements are either of type "Dependency" or "Filling". "Dependency" are text fragments identified by the Stanford Parser (only meaningful words). "Fillings" are the spaces between those text fragments. Dependencies and Fillings allow a complete reconstruction of the original text by concatenating the elements.   
-A "Dependency" is described by
+The elements are either of type "Word" or "Filling". A "Word" is a text fragment identified by the Stanford Parser (only meaningful words). A "Word" contains dependencies to one or more other "Word"s (called governor). "Fillings" are the spaces between those text fragments. Words and Fillings allow a complete reconstruction of the original text by concatenating the elements.   
+
+A "Word" is described by
 
  + text: The value at this position of the sentence (mostly a word)
  + index: The position in the sentence
- + gov: The 'governor' on which this value depends on 
- + govIndex: The index of the 'governor' on which this value depends on  
- + relation: The type of relation between this value and the governor
+ + dependencies: The depependency (relation) to a governor-word
 
+A "Governor" is describe by
+
+ + gov: The 'governor' on which this word depends on 
+ + govIndex: The index of the 'governor' on which this value depends on  
+ + relation: The type of relation between this word and the governor
 
 A "Filling" is described by:   
  
