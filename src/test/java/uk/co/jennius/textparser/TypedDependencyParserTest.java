@@ -1,10 +1,13 @@
 package uk.co.jennius.textparser;
 
+import java.util.Arrays;
 import java.util.List;
 
+import org.hamcrest.collection.IsIterableContainingInOrder;
 import org.junit.*;
 import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 public class TypedDependencyParserTest {
 
@@ -27,38 +30,51 @@ public class TypedDependencyParserTest {
 		List<Sentence> sentences = parser(
 				TypedDependencyOptions.OnlyDependencies).getTypedDependencies(
 				"I'm a programmer!");
+
 		assertThat(sentences.size(), is(1));
 		Sentence sentence = sentences.get(0);
 		assertThat(sentence.getAtoms().size(), is(4));
-		Dependency iWord = (Dependency) sentence.getAtoms().get(0);
-		Dependency amWord = (Dependency) sentence.getAtoms().get(1);
-		Dependency aWord = (Dependency) sentence.getAtoms().get(2);
-		Dependency programmerWord = (Dependency) sentence.getAtoms()
-				.get(3);
+		// I
+		Word iWord = (Word) sentence.getAtoms().get(0);
+		assertThat(iWord.getDependencies().size(), is(1));
+		Dependency iDependency = iWord.getDependencies().get(0);
+		// am
+		Word amWord = (Word) sentence.getAtoms().get(1);
+		assertThat(amWord.getDependencies().size(), is(1));
+		Dependency amDependency = amWord.getDependencies().get(0);
+		// a
+		Word aWord = (Word) sentence.getAtoms().get(2);
+		assertThat(aWord.getDependencies().size(), is(1));
+		Dependency aDependency = aWord.getDependencies().get(0);
+		// programmer
+		Word programmerWord = (Word) sentence.getAtoms().get(3);
+		assertThat(programmerWord.getDependencies().size(), is(1));
+		Dependency programmerDependency = programmerWord.getDependencies().get(
+				0);
 
 		assertThat(iWord.getText(), is("I"));
-		assertThat(iWord.getGov(), is("programmer"));
 		assertThat(iWord.getIndex(), is(0));
-		assertThat(iWord.getGovIndex(), is(3));
-		assertThat(iWord.getRelation(), is("nsubj"));
+		assertThat(iDependency.getGov(), is("programmer"));
+		assertThat(iDependency.getGovIndex(), is(3));
+		assertThat(iDependency.getRelation(), is("nsubj"));
 
 		assertThat(amWord.getText(), is("'m"));
-		assertThat(amWord.getGov(), is("programmer"));
 		assertThat(amWord.getIndex(), is(1));
-		assertThat(amWord.getGovIndex(), is(3));
-		assertThat(amWord.getRelation(), is("cop"));
+		assertThat(amDependency.getGov(), is("programmer"));
+		assertThat(amDependency.getGovIndex(), is(3));
+		assertThat(amDependency.getRelation(), is("cop"));
 
 		assertThat(aWord.getText(), is("a"));
-		assertThat(aWord.getGov(), is("programmer"));
 		assertThat(aWord.getIndex(), is(2));
-		assertThat(aWord.getGovIndex(), is(3));
-		assertThat(aWord.getRelation(), is("det"));
+		assertThat(aDependency.getGov(), is("programmer"));
+		assertThat(aDependency.getGovIndex(), is(3));
+		assertThat(aDependency.getRelation(), is("det"));
 
 		assertThat(programmerWord.getText(), is("programmer"));
-		assertThat(programmerWord.getGov(), is(""));
 		assertThat(programmerWord.getIndex(), is(3));
-		assertThat(programmerWord.getGovIndex(), is(-1));
-		assertThat(programmerWord.getRelation(), is("root"));
+		assertThat(programmerDependency.getGov(), is(""));
+		assertThat(programmerDependency.getGovIndex(), is(-1));
+		assertThat(programmerDependency.getRelation(), is("root"));
 	}
 
 	@Test
@@ -71,45 +87,88 @@ public class TypedDependencyParserTest {
 		Sentence sentence = sentences.get(0);
 		assertThat(sentence.getAtoms().size(), is(7));
 
-		Dependency iWord = (Dependency) sentence.getAtoms().get(0);
-		Dependency amWord = (Dependency) sentence.getAtoms().get(1);
+		// I
+		Word iWord = (Word) sentence.getAtoms().get(0);
+		assertThat(iWord.getDependencies().size(), is(1));
+		Dependency iDependency = iWord.getDependencies().get(0);
+		// 'm
+		Word amWord = (Word) sentence.getAtoms().get(1);
+		assertThat(amWord.getDependencies().size(), is(1));
+		Dependency amDependency = amWord.getDependencies().get(0);
+		// ' '
 		Filling space2 = (Filling) sentence.getAtoms().get(2);
-		Dependency aWord = (Dependency) sentence.getAtoms().get(3);
+		// a
+		Word aWord = (Word) sentence.getAtoms().get(3);
+		assertThat(aWord.getDependencies().size(), is(1));
+		Dependency aDependency = aWord.getDependencies().get(0);
+		// ' '
 		Filling space3 = (Filling) sentence.getAtoms().get(4);
-		Dependency programmerWord = (Dependency) sentence.getAtoms().get(5);
+		// programmer
+		Word programmerWord = (Word) sentence.getAtoms().get(5);
+		assertThat(programmerWord.getDependencies().size(), is(1));
+		Dependency programmerDependency = programmerWord.getDependencies().get(
+				0);
+		// !
 		Filling exclamation = (Filling) sentence.getAtoms().get(6);
 
 		assertThat(iWord.getText(), is("I"));
-		assertThat(iWord.getGov(), is("programmer"));
 		assertThat(iWord.getIndex(), is(0));
-		assertThat(iWord.getGovIndex(), is(5));
-		assertThat(iWord.getRelation(), is("nsubj"));
-		
+		assertThat(iDependency.getGov(), is("programmer"));
+		assertThat(iDependency.getGovIndex(), is(5));
+		assertThat(iDependency.getRelation(), is("nsubj"));
+
 		assertThat(amWord.getText(), is("'m"));
-		assertThat(amWord.getGov(), is("programmer"));
 		assertThat(amWord.getIndex(), is(1));
-		assertThat(amWord.getGovIndex(), is(5));
-		assertThat(amWord.getRelation(), is("cop"));
-		
+		assertThat(amDependency.getGov(), is("programmer"));
+		assertThat(amDependency.getGovIndex(), is(5));
+		assertThat(amDependency.getRelation(), is("cop"));
+
 		assertThat(space2.getText(), is(" "));
 		assertThat(space2.getIndex(), is(2));
-		
+
 		assertThat(aWord.getText(), is("a"));
-		assertThat(aWord.getGov(), is("programmer"));
 		assertThat(aWord.getIndex(), is(3));
-		assertThat(aWord.getGovIndex(), is(5));
-		assertThat(aWord.getRelation(), is("det"));
-		
+		assertThat(aDependency.getGov(), is("programmer"));
+		assertThat(aDependency.getGovIndex(), is(5));
+		assertThat(aDependency.getRelation(), is("det"));
+
 		assertThat(space3.getText(), is("  "));
 		assertThat(space3.getIndex(), is(4));
-		
+
 		assertThat(programmerWord.getText(), is("programmer"));
-		assertThat(programmerWord.getGov(), is(""));
 		assertThat(programmerWord.getIndex(), is(5));
-		assertThat(programmerWord.getGovIndex(), is(-1));
-		assertThat(programmerWord.getRelation(), is("root"));
-		
+		assertThat(programmerDependency.getGov(), is(""));
+		assertThat(programmerDependency.getGovIndex(), is(-1));
+		assertThat(programmerDependency.getRelation(), is("root"));
+
 		assertThat(exclamation.getText(), is("!"));
-		assertThat(exclamation.getIndex(), is(6));	
+		assertThat(exclamation.getIndex(), is(6));
+	}
+
+	@Test
+	public void getTypedDependencies_ShouldHandleWordThatHaveMoreThanOneGovernor()
+			throws TextParserException {
+		List<Sentence> sentences = parser(
+				TypedDependencyOptions.PreserveSentenceStructure)
+				.getTypedDependencies("A cow, which has eyes, is eating.");
+
+		assertThat(sentences.size(), is(1));
+		Sentence sentence = sentences.get(0);
+				
+		Word cowWord = sentence.getWords().get(1);
+		
+		// Word
+		assertThat(cowWord.getText(), is("cow"));
+		assertThat(cowWord.getDependencies().size(), is(2));
+		Dependency hasDependency = cowWord.getDependencies().get(0);
+		Dependency eatingDependency = cowWord.getDependencies().get(1);
+		// Dependencies
+		assertThat(hasDependency.getGov(), is("has"));
+		assertThat(hasDependency.getGovIndex(), is(6));
+		assertThat(hasDependency.getRelation(), is("nsubj"));
+		assertThat(eatingDependency.getGov(), is("eating"));
+		assertThat(eatingDependency.getGovIndex(), is(13));
+		assertThat(eatingDependency.getRelation(), is("nsubj"));
+			
 	}
 }

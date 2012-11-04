@@ -1,13 +1,13 @@
 package uk.co.jennius.textparser;
 
-public class Dependency {
-
+public class TypedDependencyDesc extends Atom {
 	private String gov;
 	private int govIndex;
 	private String relation;
 
-	public Dependency(String gov, int govIndex, String relation) {
-
+	public TypedDependencyDesc(String dep, String gov, int depIndex, int govIndex,
+			String relation) {
+		super(dep,depIndex);
 		this.gov = gov;
 		this.govIndex = govIndex;
 		this.relation = relation;
@@ -16,12 +16,12 @@ public class Dependency {
 	public String getGov() {
 		return gov;
 	}
-
+	
 	public int getGovIndex() {
 		return govIndex;
 	}
-
-	public void setGovIndex(int govIndex) {
+	
+	public void setGovIndex(int govIndex){
 		this.govIndex = govIndex;
 	}
 

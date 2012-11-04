@@ -15,14 +15,14 @@ public class SentenceBuilder implements ILabeledScoredTreeNodeVisitor {
 	// the sentence being constructed
 	private Sentence sentence;
 	// the dependencies from which the sentence is constructed
-	private LinkedList<Dependency> dependencies;
+	private LinkedList<TypedDependencyDesc> dependencies;
 	// options influencing how the Sentence is constructed
 	private TypedDependencyOptions option;
 	// maps the original index to the actually used index per dependency (index
 	// shifts as "fillings" are inserted)
 	private HashMap<Integer, Integer> originalToModifiedIndexMapping = new HashMap<Integer, Integer>();
 
-	public SentenceBuilder(LinkedList<Dependency> dependencies,
+	public SentenceBuilder(LinkedList<TypedDependencyDesc> dependencies,
 			TypedDependencyOptions option) {
 		sentence = new Sentence();
 		this.dependencies = dependencies;
@@ -45,22 +45,48 @@ public class SentenceBuilder implements ILabeledScoredTreeNodeVisitor {
 			return;
 		}
 
-		Dependency next = dependencies.peek();
-		String dep = next.getText();
-		if (text.endsWith(dep)) {
-			int startIndex = text.indexOf(dep);
+		TypedDependencyDesc next = dependencies.peek();
+
+		if (text.endsWith(next.getText())) {
+			int startIndex = text.indexOf(next.getText());
 			String filling = text.substring(0, startIndex);
 			if (!(filling == null || filling.length() == 0)) {
 				addFilling(filling);
 			}
-			// it's a dependency
-			addDependency(next);
-			dependencies.poll();
+
+			addWord(next);
 		} else {
 			// it's a filling and hopefully next visit is a filling and a
 			// dependency
 			addFilling(text);
 		}
+	}
+
+	private void addWord(TypedDependencyDesc next) {
+		// the word index as parsed by the Stanford-Parser
+		int origWordIndex = next.getIndex();
+
+		Word word = new Word(next.getText(), currentIndex);
+		sentence.add(word);
+
+		originalToModifiedIndexMapping.put(origWordIndex, currentIndex);
+		// adds the dependency at the currentIndex, getIndex might be wrong at
+		// this time because getIndex() doesn't account for fillings. govIndex
+		// is wrong as well but will be corrected at the end when we know how
+		// all the
+		// dependencies were offset
+		currentIndex++;
+
+		// Consume all Dependencies that are related to the added word (in most
+		// cases there is only one)
+		do {
+			Dependency dependency = new Dependency(next.getGov(),
+					next.getGovIndex(), next.getRelation());
+			word.add(dependency);
+			dependencies.poll();
+			next = dependencies.peek();
+		} while (next != null && next.getIndex() == origWordIndex);
+
 	}
 
 	private void addFilling(String text) {
@@ -70,28 +96,17 @@ public class SentenceBuilder implements ILabeledScoredTreeNodeVisitor {
 		}
 	}
 
-	private void addDependency(Dependency dep) {
-
-		originalToModifiedIndexMapping.put(dep.getIndex(), currentIndex);
-		// adds the dependency at the currentIndex, gotIndex might be wrong at
-		// this time because getGovIndex() doesn't account for fillings
-		// govIndex will be corrected at the end, when we know how all the
-		// dependencies were offset
-		sentence.add(new Dependency(dep.getText(), dep.getGov(), currentIndex,
-				dep.getGovIndex(), dep.getRelation()));
-		currentIndex++;
-	}
-
 	public void visitsFinished() {
 		// we now have to update the govIndex since fillings mighty have been
 		// inserted between the dependencies
-		for (Dependency dep : sentence.getDependencies()) {
-			if (dep.getRelation() != "root") {
-				dep.setGovIndex(originalToModifiedIndexMapping.get(dep
-						.getGovIndex()));
+		for (Word word : sentence.getWords()) {
+			for (Dependency dep : word.getDependencies()) {
+				if (dep.getRelation() != "root") {
+					dep.setGovIndex(originalToModifiedIndexMapping.get(dep
+							.getGovIndex()));
+				}
 			}
 		}
-
 	}
 
 	public Sentence getSentence() {

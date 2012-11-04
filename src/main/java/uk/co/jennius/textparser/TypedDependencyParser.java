@@ -95,7 +95,7 @@ public class TypedDependencyParser {
 	}
 
 	private Sentence createSentence(LabeledScoredTreeNode sentenceTree,
-			LinkedList<Dependency> dependencies) throws TextParserException {
+			LinkedList<TypedDependencyDesc> dependencies) throws TextParserException {
 		LabeledScoredTreeNodeIterator iterator = new LabeledScoredTreeNodeIterator(
 				sentenceTree);
 		SentenceBuilder sentenceBuilder = new SentenceBuilder(dependencies,
@@ -104,13 +104,13 @@ public class TypedDependencyParser {
 		return sentenceBuilder.getSentence();
 	}
 
-	private Dependency createDependency(TypedDependency dependency) {
+	private TypedDependencyDesc createDependencyDescriptor(TypedDependency dependency) {
 		String gov = dependency.gov().label().originalText();
 		String dep = dependency.dep().label().originalText();
 		int govIndex = dependency.gov().index() -1;  // because we prefer 0-based index 
 		int depIndex = dependency.dep().index() -1;
 		String relation = dependency.reln().getShortName();
-		Dependency word = new Dependency(dep, gov, depIndex, govIndex, relation);
+		TypedDependencyDesc word = new TypedDependencyDesc(dep, gov, depIndex, govIndex, relation);
 		return word;
 	}
 
@@ -120,12 +120,12 @@ public class TypedDependencyParser {
 		List<LabeledScoredTreeNode> sentenceTrees = getSentencesTree(text);
 
 		for (LabeledScoredTreeNode sentenceTree : sentenceTrees) {
-			LinkedList<Dependency> dependencies = new LinkedList<Dependency>();
+			LinkedList<TypedDependencyDesc> dependencies = new LinkedList<TypedDependencyDesc>();
 			EnglishGrammaticalStructure structure = new EnglishGrammaticalStructure(
 					sentenceTree);
 			for (TypedDependency dependency : structure
 					.typedDependenciesCCprocessed()) {
-				Dependency word = createDependency(dependency);
+				TypedDependencyDesc word = createDependencyDescriptor(dependency);
 				dependencies.add(word);
 			}
 

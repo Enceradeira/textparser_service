@@ -14,7 +14,7 @@ public class Sentence {
 		return atoms;
 	}
 
-	public void add(Dependency word) {
+	public void add(Word word) {
 		atoms.add(word);
 	}
 
@@ -26,11 +26,11 @@ public class Sentence {
 		return atoms.size() == 0;
 	}
 	
-	public List<Dependency> getDependencies(){
-		List<Dependency> result = new ArrayList<Dependency>();
+	public List<Word> getWords(){
+		List<Word> result = new ArrayList<Word>();
 		for(Atom atom: atoms){
-			if(atom instanceof Dependency){
-				result.add((Dependency) atom);	
+			if(atom instanceof Word){
+				result.add((Word) atom);	
 			}			
 		}
 		return result;
