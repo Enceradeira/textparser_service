@@ -25,6 +25,7 @@ A "Dependency" is described by
  + govIndex: The index of the 'governor' on which this value depends on  
  + relation: The type of relation between this value and the governor
 
+
 A "Filling" is described by:   
  
  + text: The value at this position of the sentence (mostly space, comma, exclamation mark etc..)
