@@ -18,24 +18,24 @@ import edu.stanford.nlp.trees.TypedDependency;
 
 public class TypedDependencyParser {
 
-	private static LexicalizedParserQuery _parserQuery = null;
+	private static LexicalizedParser _parser = null;
 	private TypedDependencyOptions option;
 
 	public TypedDependencyParser(TypedDependencyOptions options) {
 		this.option = options;
 	}
 
-	private static LexicalizedParserQuery getParserQuery() {
-		if (_parserQuery == null) {
-			initParserQuery();
+	private static LexicalizedParser getParser() {
+		if (_parser == null) {
+			initParser();
 		}
-		return _parserQuery;
+		return _parser;
 	}
 
-	private static synchronized void initParserQuery() {
-		if (_parserQuery == null) {
+	private static synchronized void initParser() {
+		if (_parser == null) {
 
-			LexicalizedParser parser = LexicalizedParser.loadModel(
+			_parser = LexicalizedParser.loadModel(
 					"englishPCFG.ser.gz", "-retainTmpSubcategories" /*
 																	 * should
 																	 * lead to
@@ -46,7 +46,7 @@ public class TypedDependencyParser {
 																	 * typed
 																	 * -dependencies
 																	 */);
-			_parserQuery = parser.parserQuery();
+			
 		}
 	}
 
@@ -84,7 +84,7 @@ public class TypedDependencyParser {
 		try {
 			List<List<HasWord>> sentences = getSentences(text);
 			for (List<HasWord> sentence : sentences) {
-				LexicalizedParserQuery query = getParserQuery();
+				LexicalizedParserQuery query = getParser().parserQuery();
 				query.parse(sentence);
 				trees.add((LabeledScoredTreeNode) query.getBestParse());
 			}
